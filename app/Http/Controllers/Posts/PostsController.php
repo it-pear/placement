@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Posts;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Posts;
-
+use App\Http\Requests\StorePostRequest;
 
 class PostsController extends Controller
 {
@@ -21,10 +21,11 @@ class PostsController extends Controller
         return response()->json(Posts::get(), 200);
     }
     public function getById($id) {
-        if ($this->checkAuth()) {
-            return $this->checkAuth();
+        $post = Posts::find($id);
+        if(is_null($post)) {
+            return response()->json(['error' => true, 'message' => 'Такого поста не существует'], 404);
         } else {
-            return response()->json(Posts::find($id), 200);
+            return response()->json($post, 200);
         }
     }
     public function savePost(Request $req) {
@@ -33,6 +34,32 @@ class PostsController extends Controller
         } else {
             $post = Posts::create($req->all());
             return response()->json($post, 201);
+        }
+    }
+    public function editPost(StorePostRequest $req, $id) {
+        if ($this->checkAuth()) {
+            return $this->checkAuth();
+        } else {
+            $post = Posts::find($id);
+            if(is_null($post)) {
+                return response()->json(['error' => true, 'message' => 'Такого поста не существует'], 404);
+            } else {
+                $post->update($req->all());
+                return response()->json($post, 200);
+            }
+        }
+    }
+    public function delPost($id) {
+        if ($this->checkAuth()) {
+            return $this->checkAuth();
+        } else {
+            $post = Posts::find($id);
+            if(is_null($post)) {
+                return response()->json(['error' => true, 'message' => 'Такого поста не существует'], 404);
+            } else {
+                $post->delete();
+                return response()->json(['message' => 'Пост удален'], 200);
+            }
         }
     }
 }

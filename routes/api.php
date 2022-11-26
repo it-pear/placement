@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('posts/getall', 'App\Http\Controllers\Posts\PostsController@getAll');
 Route::get('posts/{id}', 'App\Http\Controllers\Posts\PostsController@getById');
 Route::post('posts/save', 'App\Http\Controllers\Posts\PostsController@savePost');
+Route::put('posts/edit/{id}', 'App\Http\Controllers\Posts\PostsController@editPost');
+Route::post('posts/del/{id}', 'App\Http\Controllers\Posts\PostsController@delPost');
 
 Route::post('login', 'App\Http\Controllers\AuthController@login');
 Route::post('registration', 'App\Http\Controllers\AuthController@registration');
