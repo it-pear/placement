@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('posts_property_option', function (Blueprint $table) {
+        Schema::create('advantages', function (Blueprint $table) {
             $table->id();
-            $table->integer('property_option_id');
-            $table->integer('posts_id');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts_property_option');
+        Schema::dropIfExists('advantages');
     }
 };

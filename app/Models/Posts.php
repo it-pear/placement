@@ -15,6 +15,15 @@ class Posts extends Model
         'description',
         'image',
         'price',
-        'is_recommended'
+        'is_recommended',
+        'square',
+        'deadline',
+        'storeys',
+        'finishing',
+        'layout_id',
+        'type_id',
+        'city_id',
+        'region_id',
+        'distance_id',
     ];
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Posts;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,6 +9,9 @@ use App\Http\Requests\StorePostRequest;
 
 class PostsController extends Controller
 {
+    // $posts = DB::table('posts')
+    //         ->join('categories', 'posts.category_id', '=', 'categories.id')
+    //         ->get();
     public function checkAuth() {
         try {
             $user = auth()->userOrFail();

@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->string('square');
-            $table->string('deadline');
-            $table->string('storeys');
-            $table->string('finishing');
+            $table->string('square')->nullable();
+            $table->string('deadline')->nullable();
+            $table->string('storeys')->nullable();
+            $table->string('finishing')->nullable();
             $table->integer('layout_id');
             $table->integer('type_id');
             $table->integer('city_id');

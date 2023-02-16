@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categories extends Model
+class Citys extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'id',
         'name'
     ];
-    public function products()
-    {
-        return $this->hasMany(Posts::class);
+
+    public function region() {
+        return $this->hasMany(Regions::class, 'city_id');
     }
 }

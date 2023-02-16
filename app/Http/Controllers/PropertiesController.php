@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Citys;
+use App\Models\Properties;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
+class PropertiesController extends Controller
 {
     public function checkAuth() {
         try {
@@ -17,36 +17,35 @@ class CityController extends Controller
     }
 
     public function getAll() {
-        return response()->json(Citys::get(), 200);
+        return response()->json(Properties::get(), 200);
     }
     public function getById($id) {
-        $city = Citys::find($id);
-        if(is_null($city)) {
+        $property = Properties::find($id);
+        if(is_null($property)) {
             return response()->json(['error' => true, 'message' => 'Такого Типа квартиры не существует'], 404);
         } else {
-            return response()->json($city, 200);
+            return response()->json($property, 200);
         }
     }
-    public function saveCity(Request $req) {
+    public function saveProperty(Request $req) {
         if ($this->checkAuth()) {
             return $this->checkAuth();
         } else {
-            $city = Citys::create($req->all());
-            return response()->json($city, 201);
+            $property = Properties::create($req->all());
+            return response()->json($req->all(), 201);
         }
     }
-    public function delCity($id) {
+    public function delProperty($id) {
         if ($this->checkAuth()) {
             return $this->checkAuth();
         } else {
-            $city = Citys::find($id);
-            if(is_null($city)) {
+            $property = Properties::find($id);
+            if(is_null($property)) {
                 return response()->json(['error' => true, 'message' => 'Такого поста не существует'], 404);
             } else {
-                $city->delete();
+                $property->delete();
                 return response()->json(['message' => 'Пост удален'], 200);
             }
         }
     }
-
 }
