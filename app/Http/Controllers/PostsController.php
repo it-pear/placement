@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Posts;
 use App\Http\Requests\StorePostRequest;
@@ -21,7 +23,8 @@ class PostsController extends Controller
     }
 
     public function getAll() {
-        return response()->json(Posts::get(), 200);
+        $posts = Posts::with(['category', 'layout', 'type', 'city', 'region', 'distance'])->get();
+        return response()->json($posts, 200);
     }
     public function getById($id) {
         $post = Posts::find($id);
@@ -35,7 +38,15 @@ class PostsController extends Controller
         if ($this->checkAuth()) {
             return $this->checkAuth();
         } else {
-            $post = Posts::create($req->all());
+            $file = $req->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $newPath = 'public/uploads/'. $req->name. '/' . $filename;
+            $file->move('public/uploads'. '/' . $req->name, $filename);
+            
+            $data = $req->all();
+            $data['image'] = $newPath;
+
+            $post = Posts::create($data);
             return response()->json($post, 201);
         }
     }

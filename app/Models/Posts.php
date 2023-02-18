@@ -26,4 +26,23 @@ class Posts extends Model
         'region_id',
         'distance_id',
     ];
+
+    public function category() {
+        return $this->belongsTo(Categories::class, 'category_id');
+    }
+    public function layout() {
+        return $this->belongsTo(Layouts::class, 'layout_id');
+    }
+    public function type() {
+        return $this->belongsTo(Types::class, 'type_id');
+    }
+    public function city() {
+        return $this->belongsTo(Citys::class, 'city_id');
+    }
+    public function region() {
+        return $this->belongsTo(Regions::class, 'region_id');
+    }
+    public function distance() {
+        return $this->belongsTo(Distances::class, 'distance_id');
+    }
 }

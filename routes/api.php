@@ -61,6 +61,12 @@ Route::get('region/{id}', 'App\Http\Controllers\RegionController@getById');
 Route::post('region/save', 'App\Http\Controllers\RegionController@saveRegion');
 Route::post('region/del/{id}', 'App\Http\Controllers\RegionController@delRegion');
 
+// планировка
+Route::get('layout/getall', 'App\Http\Controllers\LayoutController@getAll');
+Route::get('layout/{id}', 'App\Http\Controllers\LayoutController@getById');
+Route::post('layout/save', 'App\Http\Controllers\LayoutController@saveLayout');
+Route::post('layout/del/{id}', 'App\Http\Controllers\LayoutController@delLayout');
+
 // Страницы
 Route::get('pages/post/single', 'App\Http\Controllers\pages\CatalogIdController@getData');
 

@@ -26,6 +26,7 @@ class CatalogIdController extends Controller
         $advantages = DB::table('advantages')->get();
         $types = DB::table('types')->get();
         $distances = DB::table('distances')->get();
+        $layouts = DB::table('layouts')->get();
 
         $array = [
             'properties' => $properties, 
@@ -34,6 +35,7 @@ class CatalogIdController extends Controller
             'advantages' => $advantages,
             'types' => $types,
             'distances' => $distances,
+            'layouts' => $layouts,
         ];
 
         return response()->json($array, 200);
