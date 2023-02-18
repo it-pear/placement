@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Posts;
+use App\Models\Images;
 use App\Http\Requests\StorePostRequest;
 
 class PostsController extends Controller
@@ -26,6 +27,7 @@ class PostsController extends Controller
         $posts = Posts::with(['category', 'layout', 'type', 'city', 'region', 'distance'])->get();
         return response()->json($posts, 200);
     }
+
     public function getById($id) {
         $post = Posts::find($id);
         if(is_null($post)) {
@@ -34,6 +36,7 @@ class PostsController extends Controller
             return response()->json($post, 200);
         }
     }
+
     public function savePost(Request $req) {
         if ($this->checkAuth()) {
             return $this->checkAuth();
@@ -47,9 +50,26 @@ class PostsController extends Controller
             $data['image'] = $newPath;
 
             $post = Posts::create($data);
+            
+            $files = $req->file('images');
+            // $uploadedFiles = [];
+            foreach ($files as $file) {
+                $uniqueName = time() . '_' . $file->getClientOriginalName();
+
+                $file->storeAs('uploads'. '/' . $req->name, $uniqueName , 'public');
+
+                $uploadedFile = 'uploads'. '/' . $req->name . '/' . $uniqueName;
+
+                Images::create([
+                    'url' => $uploadedFile,
+                    'post_id' => $post->id
+                ]);
+            }
+
             return response()->json($post, 201);
         }
     }
+
     public function editPost(StorePostRequest $req, $id) {
         if ($this->checkAuth()) {
             return $this->checkAuth();
@@ -63,6 +83,7 @@ class PostsController extends Controller
             }
         }
     }
+
     public function delPost($id) {
         if ($this->checkAuth()) {
             return $this->checkAuth();
