@@ -55,10 +55,8 @@ class PostsController extends Controller
             // $uploadedFiles = [];
             foreach ($files as $file) {
                 $uniqueName = time() . '_' . $file->getClientOriginalName();
-
                 $file->storeAs('uploads'. '/' . $req->name, $uniqueName , 'public');
-
-                $uploadedFile = 'uploads'. '/' . $req->name . '/' . $uniqueName;
+                $uploadedFile = 'storage/uploads'. '/' . $req->name . '/' . $uniqueName;
 
                 Images::create([
                     'url' => $uploadedFile,
