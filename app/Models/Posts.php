@@ -25,6 +25,7 @@ class Posts extends Model
         'city_id',
         'region_id',
         'distance_id',
+        'created_at',
     ];
 
     public function category() {
@@ -44,5 +45,14 @@ class Posts extends Model
     }
     public function distance() {
         return $this->belongsTo(Distances::class, 'distance_id');
+    }
+    public function advantages()
+    {
+        return $this->belongsToMany(Infrastructure::class, 'post_advantages', 'post_id', 'advantages_id');
+    }
+    
+    public function images()
+    {
+        return $this->hasMany(Images::class, 'post_id');
     }
 }

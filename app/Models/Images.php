@@ -14,4 +14,8 @@ class Images extends Model
         'url',
         'post_id',
     ];
+    public function post()
+    {
+        return $this->belongsTo(Posts::class, 'post_id');
+    }
 }

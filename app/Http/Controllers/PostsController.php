@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Posts;
 use App\Models\Images;
@@ -33,8 +31,18 @@ class PostsController extends Controller
     }
 
     public function getAll() {
-        $posts = Posts::with(['category', 'layout', 'type', 'city', 'region', 'distance'])->get();
+        $posts = Posts::with(['category', 'layout', 'type', 'city', 'region', 'distance', 'images'])->get();
         return response()->json($posts, 200);
+    }
+
+    public function getDataForRecommend()
+    {
+      $posts = Posts::where('is_recommended', 1)
+        ->orderBy('created_at', 'desc')
+        ->take(4)
+        ->get();
+
+      return response()->json($posts, 200);
     }
 
     public function getAllFilter(Request $request) {
@@ -61,7 +69,7 @@ class PostsController extends Controller
     }
 
     public function getById($id) {
-        $post = Posts::find($id);
+        $post = Posts::with('images')->find($id);
         if(is_null($post)) {
             return response()->json(['error' => true, 'message' => 'Такого поста не существует'], 404);
         } else {

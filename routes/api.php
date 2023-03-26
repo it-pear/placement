@@ -20,11 +20,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // посты
 Route::get('posts/getall', 'App\Http\Controllers\PostsController@getAll');
+Route::get('posts/getall/recommend', 'App\Http\Controllers\PostsController@getDataForRecommend');
 Route::get('posts/{id}', 'App\Http\Controllers\PostsController@getById');
 Route::get('posts/getparams/get', 'App\Http\Controllers\PostsController@getAllFilter');
 Route::post('posts/save', 'App\Http\Controllers\PostsController@savePost');
 Route::post('posts/edit/{id}', 'App\Http\Controllers\PostsController@editPost');
 Route::post('posts/del/{id}', 'App\Http\Controllers\PostsController@delPost');
+
+// услуги
+Route::get('services/getall', 'App\Http\Controllers\ServicesController@getAll');
+Route::get('services/getall/recommend', 'App\Http\Controllers\ServicesController@getDataForRecommend');
+Route::get('services/{id}', 'App\Http\Controllers\ServicesController@getById');
+Route::post('services/save', 'App\Http\Controllers\ServicesController@saveService');
+Route::post('services/edit/{id}', 'App\Http\Controllers\ServicesController@editService');
+Route::post('services/del/{id}', 'App\Http\Controllers\ServicesController@delService');
 
 // категории
 Route::get('categories/getall', 'App\Http\Controllers\CategoriesController@getAll');
@@ -70,6 +79,12 @@ Route::post('layout/del/{id}', 'App\Http\Controllers\LayoutController@delLayout'
 
 // Страницы
 Route::get('pages/post/single', 'App\Http\Controllers\pages\CatalogIdController@getData');
+
+// посты
+Route::get('users/getall', 'App\Http\Controllers\UserController@getAll');
+Route::get('users/{id}', 'App\Http\Controllers\UserController@getById');
+Route::post('users/edit/{id}', 'App\Http\Controllers\UserController@editUser');
+Route::post('users/del/{id}', 'App\Http\Controllers\UserController@delUser');
 
 // авторизация
 Route::post('login', 'App\Http\Controllers\AuthController@login');
