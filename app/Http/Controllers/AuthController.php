@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Auth\SessionGuard;
+use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -27,9 +30,13 @@ class AuthController extends Controller
     {
         $creds = $request->only(['email', 'password']);
         if(!$token = auth()->attempt($creds)) {
-            return response()->json(['error' => true, 'message' => 'incorrect Login/Password'], 401);
+            return response()->json(['error' => true, 'message' => 'Не корректные данные'], 401);
         }
-        return response()->json(['token' => $token]);
+        $user = auth()->user();
+        return response()->json([
+            'token' => $token,
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -37,17 +44,33 @@ class AuthController extends Controller
      */
     public function registration(Request $request)
     {
-        $name = $request->name;
-        $email = $request->email;
-        $password = $request->password;
 
-        $user = new User();
-        $user->name = $name;
-        $user->email = $email;
-        $user->password = Hash::make($password);
-        $user->save();
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+        ]);
 
-        return response()->json(['message' => 'Регистрация успешно пройдена']);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json(['message' => $errors->first('email')], 422);
+        }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        
+        $credentials = $request->only('email', 'password');
+        if (! $token = JWTAuth::attempt($credentials)) {
+            return response()->json(['error' => 'Неправильные учетные данные'], 401);
+        }
+
+        $user = auth()->user();
+
+        return response()->json(compact('token', 'user'));
+        
     }
 
     /**
