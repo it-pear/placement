@@ -11,21 +11,21 @@ class PostsRepository  implements PostsRepositoryInterface
   {
     $query = Posts::query();
 
-    // if (!empty($filters['name'])) {
-    //   $query->where('name', 'like', '%' . $filters['name'] . '%');
-    // }
+    if (!empty($filters['name'])) {
+      $query->where('name', 'like', '%' . $filters['name'] . '%');
+    }
 
-    // if (!empty($filters['email'])) {
-    //   $query->whereHas('orders.customer', function ($query) use ($filters) {
-    //     $query->where('email', $filters['email']);
-    //   });
-    // }
+    if (!empty($filters['email'])) {
+      $query->whereHas('orders.customer', function ($query) use ($filters) {
+        $query->where('email', $filters['email']);
+      });
+    }
 
-    // if (!empty($filters['date'])) {
-    //   $query->whereHas('orders', function ($query) use ($filters) {
-    //     $query->whereDate('created_at', '=', $filters['date']);
-    //   });
-    // }
+    if (!empty($filters['date'])) {
+      $query->whereHas('orders', function ($query) use ($filters) {
+        $query->whereDate('created_at', '=', $filters['date']);
+      });
+    }
 
     if (!empty($filters['price_from'])) {
       $query->where('price', '>=', $filters['price_from']);
