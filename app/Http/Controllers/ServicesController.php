@@ -12,7 +12,7 @@ class ServicesController extends Controller
 
     public function getAll()
     {
-        $services = Services::paginate(1);
+        $services = Services::paginate(10);
         return response()->json($services, 200);
     }
 

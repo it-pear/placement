@@ -23,6 +23,12 @@ class AdvantagesController extends Controller
         $advantage = Advantages::create($req->all());
         return response()->json($advantage, 201);
     }
+    public function updateAdvantage(Request $request, $id)
+    {
+        $advantage = Advantages::findOrFail($id);
+        $advantage->update($request->all());
+        return response()->json($advantage, 200);
+    }
     public function delAdvantage($id) {
         $advantage = Advantages::find($id);
         if(is_null($advantage)) {

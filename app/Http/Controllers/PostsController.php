@@ -45,21 +45,13 @@ class PostsController extends Controller
 
         if (!is_null($id)) {
             $post = Posts::find($id);
-            return response()->json($post, 200);
+            return response()->json([$post], 200);
         } else {
-            $filters = $request->only(['price_from', 'price_to']);
+            $filters = $request->only(['price_from', 'price_to', 'page', 'per_page']);
 
             $products = $this->postsRepository->search($filters);
 
-            return response()->json([
-                'products' => $products->items(),
-                'meta' => [
-                    'current_page' => $products->currentPage(),
-                    'last_page' => $products->lastPage(),
-                    'per_page' => $products->perPage(),
-                    'total' => $products->total()
-                ]
-            ]);
+            return response()->json($products->items());
         }
     }
 

@@ -16,14 +16,18 @@ class CheckUserRole
      * @param  \Closure  $next
      * @return mixed
      */
-  public function handle($request, Closure $next)
-  {
-    try {
-      $user = auth()->userOrFail();
-    } catch (UserNotDefinedException $e) {
-      return response()->json(['error' => true, 'message' => $e->getMessage()], 401);
+    public function handle($request, Closure $next)
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['error' => true, 'message' => 'Unauthenticated'], 401);
+        }
+    
+        // Проверяем, является ли пользователь администратором
+        if ($user->role !== 1) {
+            return response()->json(['error' => true, 'message' => 'Нет прав'], 403);
+        }
+    
+        return $next($request);
     }
-
-    return $next($request);
-  }
 }

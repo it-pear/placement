@@ -26,6 +26,12 @@ class TypeController extends Controller
         $type = Types::create($req->all());
         return response()->json($req->all(), 201);
     }
+    public function updateType(Request $request, $id)
+    {
+        $type = Types::findOrFail($id);
+        $type->update($request->all());
+        return response()->json($type, 200);
+    }
     public function delType($id)
     {
         $type = Types::find($id);

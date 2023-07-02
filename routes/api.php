@@ -44,6 +44,7 @@ Route::get('categories/getall', 'App\Http\Controllers\CategoriesController@getAl
 Route::get('categories/{id}', 'App\Http\Controllers\CategoriesController@getById');
 Route::middleware('auth:api', 'check.user.role')->group(function () {
     Route::post('categories/save', 'App\Http\Controllers\CategoriesController@saveCategory');
+    Route::post('categories/edit/{id}', 'App\Http\Controllers\CategoriesController@editCategory');
     Route::post('categories/del/{id}', 'App\Http\Controllers\CategoriesController@delCategory');
 });
 
@@ -52,6 +53,7 @@ Route::get('type/getall', 'App\Http\Controllers\TypeController@getAll');
 Route::get('type/{id}', 'App\Http\Controllers\TypeController@getById');
 Route::middleware('auth:api', 'check.user.role')->group(function () {
     Route::post('type/save', 'App\Http\Controllers\TypeController@saveType');
+    Route::post('type/edit/{id}', 'App\Http\Controllers\TypeController@updateType');
     Route::post('type/del/{id}', 'App\Http\Controllers\TypeController@delType');
 });
 
@@ -60,6 +62,7 @@ Route::get('property/getall', 'App\Http\Controllers\PropertiesController@getAll'
 Route::get('property/{id}', 'App\Http\Controllers\PropertiesController@getById');
 Route::middleware('auth:api', 'check.user.role')->group(function () {
     Route::post('property/save', 'App\Http\Controllers\PropertiesController@saveProperty');
+    Route::post('property/edit/{id}', 'App\Http\Controllers\PropertiesController@updateProperty');
     Route::post('property/del/{id}', 'App\Http\Controllers\PropertiesController@delProperty');
 });
 
@@ -68,6 +71,7 @@ Route::get('advantages/getall', 'App\Http\Controllers\AdvantagesController@getAl
 Route::get('advantages/{id}', 'App\Http\Controllers\AdvantagesController@getById');
 Route::middleware('auth:api', 'check.user.role')->group(function () {
     Route::post('advantages/save', 'App\Http\Controllers\AdvantagesController@saveAdvantage');
+    Route::post('advantages/edit/{id}', 'App\Http\Controllers\AdvantagesController@updateAdvantage');
     Route::post('advantages/del/{id}', 'App\Http\Controllers\AdvantagesController@delAdvantage');
 });
 
@@ -76,6 +80,7 @@ Route::get('city/getall', 'App\Http\Controllers\CityController@getAll');
 Route::get('city/{id}', 'App\Http\Controllers\CityController@getById');
 Route::middleware('auth:api', 'check.user.role')->group(function () {
     Route::post('city/save', 'App\Http\Controllers\CityController@saveCity');
+    Route::post('city/edit/{id}', 'App\Http\Controllers\CityController@updateCity');
     Route::post('city/del/{id}', 'App\Http\Controllers\CityController@delCity');
 });
 
@@ -84,7 +89,17 @@ Route::get('region/getall', 'App\Http\Controllers\RegionController@getAll');
 Route::get('region/{id}', 'App\Http\Controllers\RegionController@getById');
 Route::middleware('auth:api', 'check.user.role')->group(function () {
     Route::post('region/save', 'App\Http\Controllers\RegionController@saveRegion');
+    Route::post('region/edit/{id}', 'App\Http\Controllers\RegionController@updateRegion');
     Route::post('region/del/{id}', 'App\Http\Controllers\RegionController@delRegion');
+});
+
+// Дистанции до моря
+Route::get('distance/getall', 'App\Http\Controllers\DistanceController@getAll');
+Route::get('distance/{id}', 'App\Http\Controllers\DistanceController@getById');
+Route::middleware('auth:api', 'check.user.role')->group(function () {
+    Route::post('distance/save', 'App\Http\Controllers\DistanceController@saveDistance');
+    Route::post('distance/edit/{id}', 'App\Http\Controllers\DistanceController@updateDistance');
+    Route::post('distance/del/{id}', 'App\Http\Controllers\DistanceController@delDistance');
 });
 
 // планировка
@@ -92,6 +107,7 @@ Route::get('layout/getall', 'App\Http\Controllers\LayoutController@getAll');
 Route::get('layout/{id}', 'App\Http\Controllers\LayoutController@getById');
 Route::middleware('auth:api', 'check.user.role')->group(function () {
     Route::post('layout/save', 'App\Http\Controllers\LayoutController@saveLayout');
+    Route::post('layout/edit/{id}', 'App\Http\Controllers\LayoutController@updateLayout');
     Route::post('layout/del/{id}', 'App\Http\Controllers\LayoutController@delLayout');
 });
 

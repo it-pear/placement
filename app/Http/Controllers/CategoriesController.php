@@ -12,23 +12,29 @@ class CategoriesController extends Controller
         return response()->json(Categories::get(), 200);
     }
     public function getById($id) {
-        $post = Categories::find($id);
-        if(is_null($post)) {
+        $category = Categories::find($id);
+        if(is_null($category)) {
             return response()->json(['error' => true, 'message' => 'Такого поста не существует'], 404);
         } else {
-            return response()->json($post, 200);
+            return response()->json($category, 200);
         }
     }
     public function saveCategory(Request $req) {
-        $post = Categories::create($req->all());
-        return response()->json($post, 201);
+        $category = Categories::create($req->all());
+        return response()->json($category, 201);
+    }
+    public function updateCategory(Request $request, $id)
+    {
+        $category = Categories::findOrFail($id);
+        $category->update($request->all());
+        return response()->json($category, 200);
     }
     public function delCategory($id) {
-        $post = Categories::find($id);
-        if(is_null($post)) {
+        $category = Categories::find($id);
+        if(is_null($category)) {
             return response()->json(['error' => true, 'message' => 'Такого поста не существует'], 404);
         } else {
-            $post->delete();
+            $category->delete();
             return response()->json(['message' => 'Пост удален'], 200);
         }
     }

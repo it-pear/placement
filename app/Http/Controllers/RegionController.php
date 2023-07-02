@@ -26,6 +26,12 @@ class RegionController extends Controller
         $region = Regions::create($req->all());
         return response()->json($region, 201);
     }
+    public function updateRegion(Request $request, $id)
+    {
+        $region = Regions::findOrFail($id);
+        $region->update($request->all());
+        return response()->json($region, 200);
+    }
     public function delRegion($id)
     {
         $region = Regions::find($id);

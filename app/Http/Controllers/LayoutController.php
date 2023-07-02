@@ -26,6 +26,12 @@ class LayoutController extends Controller
         $layout = Layouts::create($req->all());
         return response()->json($layout, 201);
     }
+    public function updateLayout(Request $request, $id)
+    {
+        $layout = Layouts::findOrFail($id);
+        $layout->update($request->all());
+        return response()->json($layout, 200);
+    }
     public function delLayout($id)
     {
         $layout = Layouts::find($id);
