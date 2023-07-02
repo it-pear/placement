@@ -67,27 +67,33 @@ class PostsController extends Controller
 
     public function savePost(Request $req)
     {
-        $file = $req->file('image');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $newPath = 'public/uploads/' . $req->name . '/' . $filename;
-        $file->move('public/uploads' . '/' . $req->name, $filename);
 
         $data = $req->all();
-        $data['image'] = $newPath;
+
+        if (!is_null($req->file('image'))) {
+            $file = $req->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $newPath = 'public/uploads/' . $req->name . '/' . $filename;
+            $file->move('public/uploads' . '/' . $req->name, $filename);
+
+            $data['image'] = $newPath;
+        }
 
         $post = Posts::create($data);
 
-        $files = $req->file('images');
-        // $uploadedFiles = [];
-        foreach ($files as $file) {
-            $uniqueName = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('uploads' . '/' . $req->name, $uniqueName, 'public');
-            $uploadedFile = 'storage/uploads' . '/' . $req->name . '/' . $uniqueName;
+        if (!is_null($req->file('images'))) {
+            $files = $req->file('images');
+            // $uploadedFiles = [];
+            foreach ($files as $file) {
+                $uniqueName = time() . '_' . $file->getClientOriginalName();
+                $file->storeAs('uploads' . '/' . $req->name, $uniqueName, 'public');
+                $uploadedFile = 'storage/uploads' . '/' . $req->name . '/' . $uniqueName;
 
-            Images::create([
-                'url' => $uploadedFile,
-                'post_id' => $post->id
-            ]);
+                Images::create([
+                    'url' => $uploadedFile,
+                    'post_id' => $post->id
+                ]);
+            }
         }
 
         return response()->json($post, 201);
@@ -99,7 +105,34 @@ class PostsController extends Controller
         if (is_null($post)) {
             return response()->json(['error' => true, 'message' => 'Такого поста не существует'], 404);
         } else {
-            $post->update($req->all());
+            $data = $req->all();
+
+            if (!is_null($req->file('image'))) {
+                $file = $req->file('image');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $newPath = 'public/uploads/' . $req->name . '/' . $filename;
+                $file->move('public/uploads' . '/' . $req->name, $filename);
+    
+                $data['image'] = $newPath;
+            }
+
+            $post->update($data);
+
+            if (!is_null($req->file('images'))) {
+                $files = $req->file('images');
+                // $uploadedFiles = [];
+                foreach ($files as $file) {
+                    $uniqueName = time() . '_' . $file->getClientOriginalName();
+                    $file->storeAs('uploads' . '/' . $req->name, $uniqueName, 'public');
+                    $uploadedFile = 'storage/uploads' . '/' . $req->name . '/' . $uniqueName;
+    
+                    Images::create([
+                        'url' => $uploadedFile,
+                        'post_id' => $id
+                    ]);
+                }
+            }
+            
             return response()->json($post, 200);
         }
     }

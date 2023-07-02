@@ -38,13 +38,15 @@ class ServicesController extends Controller
 
     public function saveService(Request $req)
     {
-        $file = $req->file('image');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $newPath = 'public/uploads/' . $req->name . '/' . $filename;
-        $file->move('public/uploads' . '/' . $req->name, $filename);
-
         $data = $req->all();
-        $data['image'] = $newPath;
+
+        if (!is_null($req->file('image'))) {
+            $file = $req->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $newPath = 'public/uploads/' . $req->name . '/' . $filename;
+            $file->move('public/uploads' . '/' . $req->name, $filename);
+            $data['image'] = $newPath;
+        }
 
         $service = Services::create($data);
 
@@ -57,13 +59,15 @@ class ServicesController extends Controller
         if (is_null($service)) {
             return response()->json(['error' => true, 'message' => 'Такой услуги не существует'], 404);
         } else {
-            $file = $req->file('image');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $newPath = 'public/uploads/' . $req->name . '/' . $filename;
-            $file->move('public/uploads' . '/' . $req->name, $filename);
-
             $data = $req->all();
-            $data['image'] = $newPath;
+
+            if (!is_null($req->file('image'))) {
+                $file = $req->file('image');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $newPath = 'public/uploads/' . $req->name . '/' . $filename;
+                $file->move('public/uploads' . '/' . $req->name, $filename);
+                $data['image'] = $newPath;
+            }
 
             $service->update($data);
             return response()->json($service, 200);

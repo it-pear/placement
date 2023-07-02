@@ -10,13 +10,6 @@ use Illuminate\Http\Request;
 
 class CatalogIdController extends Controller
 {
-    public function checkAuth() {
-        try {
-            $user = auth()->userOrFail();
-        } catch (\Tymon\JWTAuth\Exceptions\UserNotDefinedException $e) {
-            return response()->json(['error' => true, 'message' => $e->getMessage()], 401);
-        }
-    }
 
     // запрос должен быть admin
     public function getData() {

@@ -122,6 +122,11 @@ Route::middleware('auth:api', 'check.user.role')->group(function () {
     Route::post('users/del/{id}', 'App\Http\Controllers\UserController@delUser');
 });
 
+// картинки
+Route::middleware('auth:api', 'check.user.role')->group(function () {
+    Route::post('images/del/{id}', 'App\Http\Controllers\ImageController@deleteImageById');
+});
+
 // авторизация
 Route::post('login', 'App\Http\Controllers\AuthController@login');
 Route::post('registration', 'App\Http\Controllers\AuthController@registration');
