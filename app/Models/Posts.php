@@ -24,6 +24,7 @@ class Posts extends Model
         'type_id',
         'city_id',
         'region_id',
+        'sale',
         'distance_id',
         'created_at',
     ];
@@ -49,6 +50,10 @@ class Posts extends Model
     public function advantages()
     {
         return $this->belongsToMany(Infrastructure::class, 'post_advantages', 'post_id', 'advantages_id');
+    }
+    public function properties()
+    {
+        return $this->belongsToMany(Infrastructure::class, 'property_posts', 'post_id', 'property_id');
     }
     
     public function images()

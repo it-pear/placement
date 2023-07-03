@@ -47,7 +47,20 @@ class PostsController extends Controller
             $post = Posts::find($id);
             return response()->json([$post], 200);
         } else {
-            $filters = $request->only(['price_from', 'price_to', 'page', 'per_page']);
+            $filters = $request->only([
+                'sale', 
+                'layouts', 
+                'types', 
+                'regions', 
+                'distances', 
+                'advantages',
+                'properties',
+                'price_from', 
+                'category',
+                'price_to', 
+                'page', 
+                'per_page'
+            ]);
 
             $products = $this->postsRepository->search($filters);
 

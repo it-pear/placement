@@ -10,17 +10,11 @@ class PostsRepository  implements PostsRepositoryInterface
   public function search(array $filters = []): LengthAwarePaginator 
   {
     $query = Posts::query();
-
-    // if (!empty($filters['name'])) {
-    //   $query->where('name', 'like', '%' . $filters['name'] . '%');
-    // }
-
-    // if (!empty($filters['date'])) {
-    //   $query->whereHas('orders', function ($query) use ($filters) {
-    //     $query->whereDate('created_at', '=', $filters['date']);
-    //   });
-    // }
-
+    
+    if (!empty($filters['sale'])) {
+      $query->where('sale', $filters['sale']);
+    }
+    
     if (!empty($filters['price_from'])) {
       $query->where('price', '>=', $filters['price_from']);
     }
@@ -29,16 +23,49 @@ class PostsRepository  implements PostsRepositoryInterface
       $query->where('price', '<=', $filters['price_to']);
     }
 
-    // return $query->with(['orders' => function ($query) use ($filters) {
-    //   if (!empty($filters['date'])) {
-    //     $query->whereDate('created_at', '=', $filters['date']);
-    //   }
-    // }, 'orders.customer'])
+    if (!empty($filters['layouts'])) {
+      $layoutIds = $filters['layouts'];
+      $query->whereIn('layout_id', $layoutIds);
+    }
+
+
+    if (!empty($filters['types'])) {
+      $typeIds = $filters['types'];
+      $query->whereIn('type_id', $typeIds);
+    }
+
+    if (!empty($filters['regions'])) {
+      $regionIds = $filters['regions'];
+      $query->whereIn('region_id', $regionIds);
+    }
+
+    if (!empty($filters['distances'])) {
+      $distanceIds = $filters['distances'];
+      $query->whereIn('distance_id', $distanceIds);
+    }
+
+    if (!empty($filters['category'])) {
+      $query->where('category_id', $filters['category']);
+    }
+
+    if (!empty($filters['advantages'])) {
+      $advantageIds = $filters['advantages'];
+      $query->whereHas('advantages', function ($query) use ($advantageIds) {
+          $query->whereIn('id', $advantageIds);
+      });
+    }
+
+    if (!empty($filters['properties'])) {
+      $propertyIds = $filters['properties'];
+      $query->whereHas('properties', function ($query) use ($propertyIds) {
+        $query->whereIn('id', $propertyIds);
+      });
+    }
+
     $perPage = !empty($filters['per_page']) ? $filters['per_page'] : 10;
     $page = !empty($filters['page']) ? $filters['page'] : 1;
 
     return $query->paginate($perPage, ['*'], 'page', $page);
-      // return $query->paginate(10);
   }
 
 }
