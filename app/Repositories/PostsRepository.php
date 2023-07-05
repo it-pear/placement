@@ -34,9 +34,8 @@ class PostsRepository  implements PostsRepositoryInterface
       $query->whereIn('type_id', $typeIds);
     }
 
-    if (!empty($filters['regions'])) {
-      $regionIds = $filters['regions'];
-      $query->whereIn('region_id', $regionIds);
+    if (!empty($filters['region'])) {
+      $query->where('region_id', $filters['region']);
     }
 
     if (!empty($filters['distances'])) {
@@ -51,14 +50,14 @@ class PostsRepository  implements PostsRepositoryInterface
     if (!empty($filters['advantages'])) {
       $advantageIds = $filters['advantages'];
       $query->whereHas('advantages', function ($query) use ($advantageIds) {
-          $query->whereIn('id', $advantageIds);
+          $query->whereIn('advantages.id', $advantageIds);
       });
     }
 
     if (!empty($filters['properties'])) {
       $propertyIds = $filters['properties'];
       $query->whereHas('properties', function ($query) use ($propertyIds) {
-        $query->whereIn('id', $propertyIds);
+          $query->whereIn('properties.id', $propertyIds);
       });
     }
 

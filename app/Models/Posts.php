@@ -49,11 +49,11 @@ class Posts extends Model
     }
     public function advantages()
     {
-        return $this->belongsToMany(Infrastructure::class, 'post_advantages', 'post_id', 'advantages_id');
+        return $this->belongsToMany(Advantages::class, 'post_advantages', 'post_id', 'advantages_id');
     }
     public function properties()
     {
-        return $this->belongsToMany(Infrastructure::class, 'property_posts', 'post_id', 'property_id');
+        return $this->belongsToMany(Properties::class, 'property_posts', 'posts_id', 'property_id');
     }
     
     public function images()

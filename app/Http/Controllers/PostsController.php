@@ -51,7 +51,7 @@ class PostsController extends Controller
                 'sale', 
                 'layouts', 
                 'types', 
-                'regions', 
+                'region', 
                 'distances', 
                 'advantages',
                 'properties',
@@ -70,7 +70,7 @@ class PostsController extends Controller
 
     public function getById($id)
     {
-        $post = Posts::with('images')->find($id);
+        $post = Posts::with('images', 'advantages', 'properties')->find($id);
         if (is_null($post)) {
             return response()->json(['error' => true, 'message' => 'Такого поста не существует'], 404);
         } else {
@@ -80,7 +80,6 @@ class PostsController extends Controller
 
     public function savePost(Request $req)
     {
-
         $data = $req->all();
 
         if (!is_null($req->file('image'))) {
@@ -93,6 +92,14 @@ class PostsController extends Controller
         }
 
         $post = Posts::create($data);
+
+        if (isset($data['properties'])) {
+            $post->properties()->sync($data['properties']);
+        }
+    
+        if (isset($data['advantages'])) {
+            $post->advantages()->sync($data['advantages']);
+        }
 
         if (!is_null($req->file('images'))) {
             $files = $req->file('images');
@@ -130,6 +137,14 @@ class PostsController extends Controller
             }
 
             $post->update($data);
+
+            if (isset($data['properties'])) {
+                $post->properties()->sync($data['properties']);
+            }
+    
+            if (isset($data['advantages'])) {
+                $post->advantages()->sync($data['advantages']);
+            }
 
             if (!is_null($req->file('images'))) {
                 $files = $req->file('images');
