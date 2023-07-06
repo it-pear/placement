@@ -9,7 +9,7 @@ class PostsRepository  implements PostsRepositoryInterface
 
   public function search(array $filters = []): LengthAwarePaginator 
   {
-    $query = Posts::query();
+    $query = Posts::with('city', 'region', 'distance', 'category', 'layout');
     
     if (!empty($filters['sale'])) {
       $query->where('sale', $filters['sale']);
@@ -27,7 +27,6 @@ class PostsRepository  implements PostsRepositoryInterface
       $layoutIds = $filters['layouts'];
       $query->whereIn('layout_id', $layoutIds);
     }
-
 
     if (!empty($filters['types'])) {
       $typeIds = $filters['types'];

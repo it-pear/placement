@@ -44,7 +44,7 @@ class PostsController extends Controller
         $id = $request->id;
 
         if (!is_null($id)) {
-            $post = Posts::find($id);
+            $post = Posts::with('city', 'region', 'distance', 'category', 'layout')->find($id);
             return response()->json([$post], 200);
         } else {
             $filters = $request->only([
