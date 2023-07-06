@@ -64,7 +64,15 @@ class PostsController extends Controller
 
             $products = $this->postsRepository->search($filters);
 
-            return response()->json($products->items());
+            return response()->json([
+                'data' => $products->items(),
+                'pagination' => [
+                    'total' => $products->total(),
+                    'per_page' => $products->perPage(),
+                    'current_page' => $products->currentPage(),
+                    'last_page' => $products->lastPage(),
+                ]
+            ]);
         }
     }
 

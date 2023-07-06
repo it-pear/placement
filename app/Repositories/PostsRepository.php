@@ -56,7 +56,7 @@ class PostsRepository  implements PostsRepositoryInterface
     if (!empty($filters['properties'])) {
       $propertyIds = $filters['properties'];
       $query->whereHas('properties', function ($query) use ($propertyIds) {
-          $query->whereIn('properties.id', $propertyIds);
+        $query->whereIn('properties.id', $propertyIds);
       });
     }
 
