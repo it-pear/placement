@@ -33,6 +33,10 @@ class PostsRepository  implements PostsRepositoryInterface
       $query->whereIn('type_id', $typeIds);
     }
 
+    if (isset($filters['is_recommended'])) {
+      $query->where('is_recommended', $filters['is_recommended']);
+    }
+
     if (!empty($filters['region'])) {
       $query->where('region_id', $filters['region']);
     }
@@ -43,7 +47,9 @@ class PostsRepository  implements PostsRepositoryInterface
     }
 
     if (!empty($filters['category'])) {
-      $query->where('category_id', $filters['category']);
+      // $query->where('category_id', $filters['category']);
+      $categoryIds = $filters['category'];
+      $query->whereIn('category_id', $categoryIds);
     }
 
     if (!empty($filters['advantages'])) {

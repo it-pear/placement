@@ -22,7 +22,6 @@ class PostsController extends Controller
         $this->postsRepository = $postsRepository;
     }
 
-
     public function getAll()
     {
         $posts = Posts::with(['category', 'layout', 'type', 'city', 'region', 'distance', 'images'])->get();
@@ -45,7 +44,15 @@ class PostsController extends Controller
 
         if (!is_null($id)) {
             $post = Posts::with('city', 'region', 'distance', 'category', 'layout')->find($id);
-            return response()->json([$post], 200);
+            return response()->json([
+                'data' => [$post],
+                'pagination' => [
+                    'total' => 1,
+                    'per_page' => 1,
+                    'current_page' => 1,
+                    'last_page' => 1,
+                ]
+            ]);
         } else {
             $filters = $request->only([
                 'sale', 
@@ -59,7 +66,8 @@ class PostsController extends Controller
                 'category',
                 'price_to', 
                 'page', 
-                'per_page'
+                'per_page',
+                'is_recommended'
             ]);
 
             $products = $this->postsRepository->search($filters);
@@ -78,7 +86,7 @@ class PostsController extends Controller
 
     public function getById($id)
     {
-        $post = Posts::with('images', 'advantages', 'properties')->find($id);
+        $post = Posts::with('category', 'images', 'advantages', 'properties', 'type', 'city', 'region', 'distance', 'layout')->find($id);
         if (is_null($post)) {
             return response()->json(['error' => true, 'message' => 'Такого поста не существует'], 404);
         } else {
